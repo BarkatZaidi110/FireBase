@@ -1,0 +1,72 @@
+<html>
+
+<head>
+  <title>Firebase</title>
+  <script type="module">
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref,set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyAxl9f57ukhjfEhwa7BS0lGpQd8gQk3Ib0",
+      authDomain: "barkat-project.firebaseapp.com",
+      databaseURL: "https://barkat-project-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "barkat-project",
+      storageBucket: "barkat-project.appspot.com",
+      messagingSenderId: "861232588295",
+      appId: "1:861232588295:web:721a5aafb45a91d632aca2",
+      measurementId: "G-PV0PQNKEGK"
+    };
+
+
+    const app = initializeApp(firebaseConfig);
+
+    const db = getDatabase(app);
+
+
+      //to Write the data into firebase
+      function writeUserData(userId, name, email, imageUrl) {
+        set(ref (db, "users2/" + userId), {
+          username: name,
+          email: email,
+          profile_picture: imageUrl,
+        });
+      }
+     
+      const submitBtn = document.getElementById("submit");
+      console.log(submitBtn);
+
+      submitBtn.onclick = (event) => {
+        debugger;
+        event.preventDefault();
+        console.log("On Submit", event);
+        const username = document.getElementById("username");
+        const name = document.getElementById("name");
+        const email = document.getElementById("email");
+        const imageUrl = document.getElementById("imageUrl");
+        writeUserData(username.value, name.value, email.value, imageUrl.value);
+      };
+
+    
+    //to Read the data from the firebase
+    const starCountRef = ref(db);
+    onValue(starCountRef, (snapshot) => {
+      const data = snapshot.val()
+      console.log(data)
+    });
+
+
+  </script>
+</head>
+
+<body>
+  <h1>User Form</h1>
+  <form>
+    <input type="text" name="username" id="username" placeholder="Username" />
+    <input type="text" name="name" id="name" placeholder="Name" />
+    <input type="text" name="email" id="email" placeholder="Email" />
+    <input type="text" name="imageUrl" id="imageUrl" placeholder="Image Url" />
+    <input type="button" id="submit" value="Submit" />
+  </form>
+</body>
+
+</html>
